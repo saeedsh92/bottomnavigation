@@ -53,10 +53,10 @@ public class AnimationHelper {
                 AnimationSet animationSet=new AnimationSet(true);
                 animationSet.setDuration(100);
                 animationSet.addAnimation(fScaleAnimation);
+                animationSet.addAnimation(alphaAnimation);
                 animationSet.setFillAfter(true);
 
                 tabIcon.startAnimation(alphaAnimation);
-                tabText.startAnimation(alphaAnimation);
                 tabText.startAnimation(animationSet);
                 paddingAnimator.start();
                 break;
@@ -119,11 +119,11 @@ public class AnimationHelper {
                 ScaleAnimation fTextScaleAnimation=new ScaleAnimation(1,1.1f,1,1.1f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,1f);
                 AnimationSet animationSet=new AnimationSet(true);
                 animationSet.setDuration(ANIMATION_DURATION);
+                animationSet.addAnimation(alphaAnimation);
                 animationSet.addAnimation(fTextScaleAnimation);
                 animationSet.setFillAfter(true);
 
                 tabIcon.startAnimation(alphaAnimation);
-                tabText.startAnimation(alphaAnimation);
                 tabText.startAnimation(animationSet);
                 paddingAnimator.start();
                 break;

@@ -40,29 +40,17 @@ public class MainActivity extends AppCompatActivity{
                     case R.id.tab_camera:
                         transaction=getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame_fragment_containers,new FragmentF());
-                    case R.id.tab_products:
-                        transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_fragment_containers,new FragmentD());
                         break;
 
-                    case R.id.tab_more:
-                        transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_fragment_containers,new FragmentC());
-                        break;
                 }
                 transaction.commit();
             }
         });
-
-
-
-
-
-
     }
 
     @Override
     public void onBackPressed() {
+
     }
 
 }
