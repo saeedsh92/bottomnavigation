@@ -11,6 +11,7 @@ add this line to your module build.gradle dependecies block:
     compile 'com.ss.bottomnavigation:bottomnavigation:1.0'
 
 ## How use this lib
+### XML
 Currenly the only way to customize bottom navigation is using xml. you can add bottom navigation to your activity like this:
 ```xml
          <com.ss.bottomnavigation.BottomNavigation
@@ -61,7 +62,42 @@ Currenly the only way to customize bottom navigation is using xml. you can add b
                 />
          </com.ss.bottomnavigation.BottomNavigation>
 ```
+### Java
+You can set onSelectedItemChangeListener in java like this:
 
+notice: all tab items in xml must have id to determinate which item is selected.
+
+```java
+BottomNavigation bottomNavigation=(BottomNavigation)findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnSelectedItemChangeListener(new OnSelectedItemChangeListener() {
+            @Override
+            public void onSelectedItemChanged(int itemId) {
+                switch (itemId){
+                    case R.id.tab_home:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new FragmentA());
+                        break;
+                    case R.id.tab_images:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new FragmentB());
+                        break;
+                    case R.id.tab_camera:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new FragmentF());
+                        break;
+                    case R.id.tab_products:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new FragmentC());
+                        break;
+                    case R.id.tab_more:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new FragmentD());
+                        break;
+                }
+                transaction.commit();
+            }
+        });
+```
 ## Author
 Saeed shahini
 
