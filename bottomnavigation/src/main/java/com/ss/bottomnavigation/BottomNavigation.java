@@ -146,10 +146,16 @@ public class BottomNavigation extends LinearLayout {
         return typeface;
     }
 
-    public void setTypeface(Typeface typeface) {
+    public void setTypeface(final Typeface typeface) {
         this.typeface = typeface;
         for (int i = 0; i < tabItems.size(); i++) {
-            tabItems.get(i).setTypeface(typeface);
+            final TabItem tabItem=tabItems.get(i);
+            tabItem.post(new Runnable() {
+                @Override
+                public void run() {
+                    tabItem.setTypeface(typeface);
+                }
+            });
         }
     }
 }
