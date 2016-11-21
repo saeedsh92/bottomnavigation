@@ -45,6 +45,21 @@
             app:tab_icon="@drawable/ic_camera_white_24dp"
             />
 
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_products"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_text="Products"
+            app:tab_icon="@drawable/ic_products_white_24dp"/>
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_more"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_text="More"
+            app:tab_icon="@drawable/ic_more_white_24dp"/>
 
     </com.ss.bottomnavigation.BottomNavigation>
 

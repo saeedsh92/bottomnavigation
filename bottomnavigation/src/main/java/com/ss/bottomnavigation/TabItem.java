@@ -2,10 +2,10 @@ package com.ss.bottomnavigation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -69,23 +69,23 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
     private void setupView() {
 
         setOnClickListener(this);
-        animationHelper=new AnimationHelper(getContext(),type);
+        animationHelper = new AnimationHelper(type);
 
         textView = new TextView(getContext());
         textView.setTextColor(textColor);
         textView.setText(text);
         textView.setGravity(Gravity.CENTER);
         textView.setLayoutParams(LayoutParamsHelper.getTabItemTextLayoutParams(getContext(), isActive, type));
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
         iconImageView = new ImageView(getContext());
         iconImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         iconImageView.setImageDrawable(icon);
         iconImageView.setLayoutParams(LayoutParamsHelper.getTabItemIconLayoutParams(getContext(), isActive, type));
-        if (position==bottomNavigation.getDefaultItem()) {
-            isActive=true;
+        if (position == bottomNavigation.getDefaultItem()) {
+            isActive = true;
             animationHelper.animateActivate(textView, iconImageView);
-        }else {
+        } else {
             animationHelper.animateDeactivate(textView, iconImageView);
         }
 
@@ -112,8 +112,11 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
             TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.TabItem, 0, 0);
             try {
                 text = typedArray.getString(R.styleable.TabItem_tab_text);
-                Log.i("View", "parseCustomAttributes: text=> " + text);
-                textColor = typedArray.getColor(R.styleable.TabItem_tab_text_color, ContextCompat.getColor(getContext(), R.color.default_text_color));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    textColor = typedArray.getColor(R.styleable.TabItem_tab_text_color, getResources().getColor(R.color.default_text_color, null));
+                } else {
+                    textColor = typedArray.getColor(R.styleable.TabItem_tab_text_color, getResources().getColor(R.color.default_text_color));
+                }
                 icon = typedArray.getDrawable(R.styleable.TabItem_tab_icon);
             } finally {
                 typedArray.recycle();
@@ -126,8 +129,8 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
             @Override
             public void run() {
                 if (getParent() instanceof BottomNavigation) {
-                    bottomNavigation=(BottomNavigation)getParent();
-                    type =bottomNavigation.getType();
+                    bottomNavigation = (BottomNavigation) getParent();
+                    type = bottomNavigation.getType();
                     setupView();
                 } else {
                     throw new RuntimeException("TabItem parent must be BottomNavigation!");
@@ -165,19 +168,25 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
     private void notifyChange() {
         switch (type) {
             case BottomNavigation.TYPE_FIXED:
-                if (isActive){
-                    animationHelper.animateDeactivate(textView,iconImageView);
-                }else {
-                    animationHelper.animateActivate(textView,iconImageView);
+                if (isActive) {
+                    animationHelper.animateDeactivate(textView, iconImageView);
+                } else {
+                    animationHelper.animateActivate(textView, iconImageView);
                 }
                 break;
             case BottomNavigation.TYPE_DYNAMIC:
-                if (isActive){
-                    animationHelper.animateDeactivate(textView,iconImageView);
-                }else {
-                    animationHelper.animateActivate(textView,iconImageView);
+                if (isActive) {
+                    animationHelper.animateDeactivate(textView, iconImageView);
+                } else {
+                    animationHelper.animateActivate(textView, iconImageView);
                 }
                 break;
+        }
+    }
+
+    public void setTypeface(Typeface typeface) {
+        if (textView != null) {
+            textView.setTypeface(typeface);
         }
     }
 }

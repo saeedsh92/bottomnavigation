@@ -1,12 +1,14 @@
 package com.ss.bottomnavigation;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 
 import com.ss.bottomnavigation.events.OnItemClickListener;
 import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
+import com.ss.bottomnavigation.utils.AnimationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class BottomNavigation extends LinearLayout {
     private byte selectedItemPosition = defaultItem;
 
     List<TabItem> tabItems = new ArrayList<>();
+    private Typeface typeface;
 
     public BottomNavigation(Context context) {
         super(context);
@@ -87,10 +90,14 @@ public class BottomNavigation extends LinearLayout {
                                     selectedItemPosition = position;
                                     onSelectedItemChanged();
                                     if (onSelectedItemChangeListener != null) {
-                                        onSelectedItemChangeListener.onSelectedItemChanged(tabItem.getId());
+                                        postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                onSelectedItemChangeListener.onSelectedItemChanged(tabItem.getId());
+                                            }
+                                        }, AnimationHelper.ANIMATION_DURATION);
                                     }
                                 }
-
                             }
                         });
                     }
@@ -133,5 +140,16 @@ public class BottomNavigation extends LinearLayout {
 
     public void setOnSelectedItemChangeListener(OnSelectedItemChangeListener onSelectedItemChangeListener) {
         this.onSelectedItemChangeListener = onSelectedItemChangeListener;
+    }
+
+    public Typeface getTypeface() {
+        return typeface;
+    }
+
+    public void setTypeface(Typeface typeface) {
+        this.typeface = typeface;
+        for (int i = 0; i < tabItems.size(); i++) {
+            tabItems.get(i).setTypeface(typeface);
+        }
     }
 }

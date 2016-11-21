@@ -26,5 +26,13 @@ public class FragmentA extends Fragment{
         return inflater.inflate(R.layout.fragment_a,container,false);
     }
 
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

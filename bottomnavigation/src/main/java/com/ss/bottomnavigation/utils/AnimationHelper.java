@@ -2,7 +2,6 @@ package com.ss.bottomnavigation.utils;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -19,12 +18,10 @@ import com.ss.bottomnavigation.BottomNavigation;
  */
 
 public class AnimationHelper {
-    private Context context;
     private byte type;
-    private static int ANIMATION_DURATION=100;
+    public static int ANIMATION_DURATION=100;
 
-    public AnimationHelper(Context context,byte type) {
-        this.context = context;
+    public AnimationHelper(byte type) {
         this.type=type;
     }
 
@@ -44,7 +41,6 @@ public class AnimationHelper {
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         FrameLayout.LayoutParams tabIconLayoutParams = (FrameLayout.LayoutParams) tabIcon.getLayoutParams();
                         tabIconLayoutParams.topMargin = (int) valueAnimator.getAnimatedValue();
-                        Log.i("View", "onAnimationUpdate: topMargin=> " + tabIconLayoutParams.topMargin);
                         tabIcon.setLayoutParams(tabIconLayoutParams);
                     }
                 });
@@ -75,7 +71,6 @@ public class AnimationHelper {
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         FrameLayout.LayoutParams tabIconLayoutParams= (FrameLayout.LayoutParams) tabIcon.getLayoutParams();
                         tabIconLayoutParams.topMargin=(int)valueAnimator.getAnimatedValue();
-                        Log.i("View", "onAnimationUpdate: topMargin=> "+tabIconLayoutParams.topMargin);
                         tabIcon.setLayoutParams(tabIconLayoutParams);
 
                     }

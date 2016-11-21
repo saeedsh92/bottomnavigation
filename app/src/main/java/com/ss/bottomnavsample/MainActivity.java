@@ -13,8 +13,6 @@ import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
 
 public class MainActivity extends AppCompatActivity{
     private FragmentTransaction transaction;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +39,14 @@ public class MainActivity extends AppCompatActivity{
                         transaction=getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame_fragment_containers,new FragmentF());
                         break;
-
+                    case R.id.tab_products:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new FragmentC());
+                        break;
+                    case R.id.tab_more:
+                        transaction=getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_fragment_containers,new FragmentD());
+                        break;
                 }
                 transaction.commit();
             }
