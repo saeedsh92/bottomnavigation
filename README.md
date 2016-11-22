@@ -1,6 +1,6 @@
 # BottomNavigation
 Bottom navigation inspired by google material design guideline.
-
+<img src="https://github.com/saeedsh92/bottomnavigation/blob/master/demo_banner.png?raw=false" width="700">
 ## Phone Mode
 <img src="https://github.com/saeedsh92/bottomnavigation/blob/master/port_dynamic.png?raw=false" width="350">
 <img src="https://github.com/saeedsh92/bottomnavigation/blob/master/port_fixed.png?raw=false" width="350">
