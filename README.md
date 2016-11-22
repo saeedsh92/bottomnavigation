@@ -1,8 +1,10 @@
 # BottomNavigation
 Bottom navigation inspired by google material design guideline.
 
+## Phone Mode
 <img src="https://github.com/saeedsh92/bottomnavigation/blob/master/port_dynamic.png?raw=false" width="350">
 <img src="https://github.com/saeedsh92/bottomnavigation/blob/master/port_fixed.png?raw=false" width="350">
+## Tablet Mode
 <img src="https://github.com/saeedsh92/bottomnavigation/blob/master/land_dynamic.png?raw=false" width="700">
 <img src="https://github.com/saeedsh92/bottomnavigation/blob/master/land_fixed.png?raw=false" width="700">
 ## How to download
@@ -71,6 +73,38 @@ Currenly the only way to customize bottom navigation is using xml. you can add b
                 />
          </com.ss.bottomnavigation.BottomNavigation>
 ```
+if you want change bottom navigation mode, you must change it like below:
+
+    app:mode="phone"
+    
+or
+
+    app:mode="tablet"
+    
+### Examples
+Phone Mode:
+
+ ```xml
+    <com.ss.bottomnavigation.BottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:mode="phone">
+```
+Tablet Mode:
+
+```xml
+    <com.ss.bottomnavigation.BottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:mode="tablet">
+```
+
 ### Java
 You can set onSelectedItemChangeListener in java like this:
 
@@ -107,6 +141,19 @@ BottomNavigation bottomNavigation=(BottomNavigation)findViewById(R.id.bottom_nav
             }
         });
 ```
+### Change default item
+you can change default selected tab item by add this line to your code (before setOnSelectedItemChangeListener):
+
+```java
+    bottomNavigation.setDefaultItem(1); // change default selected tab item by position
+```
+
+### Set custom font
+for set custom font on bottom navigation, you simply need add this line to your code:
+```java
+    bottomNavigation.setTypeface(myTypeface);
+```
+
 ## Author
 Saeed shahini
 
