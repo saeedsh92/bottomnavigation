@@ -12,8 +12,7 @@ android {
         versionCode 4
         versionName "1.4.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        group = 'com.ss.bottomnavigation' // Change this to match your package name
-        version = '1.4.1' // Change this to match your version number
+
     }
     buildTypes {
         release {
@@ -21,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 
