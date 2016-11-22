@@ -5,6 +5,6 @@ package com.ss.bottomnavigation.events;
  * @since 11/13/16
  */
 
-public interface OnItemClickListener {
-    void onClick(byte position);
+public interface OnTabItemClickListener {
+    void onTabItemClick(int position);
 }

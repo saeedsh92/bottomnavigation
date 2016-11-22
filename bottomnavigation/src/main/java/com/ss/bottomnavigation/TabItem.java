@@ -1,5 +1,6 @@
 package com.ss.bottomnavigation;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -9,13 +10,16 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ss.bottomnavigation.events.OnItemClickListener;
+import com.ss.bottomnavigation.events.OnTabItemClickListener;
 import com.ss.bottomnavigation.utils.AnimationHelper;
 import com.ss.bottomnavigation.utils.LayoutParamsHelper;
+import com.ss.bottomnavigation.utils.Util;
 
 /**
  * @author S.Shahini
@@ -23,8 +27,8 @@ import com.ss.bottomnavigation.utils.LayoutParamsHelper;
  */
 
 public class TabItem extends FrameLayout implements View.OnClickListener {
-    private OnItemClickListener onItemClickListener;
-    private byte position;
+    private OnTabItemClickListener onTabItemClickListener;
+    private int position;
 
     //Attributes
     private String text;
@@ -36,7 +40,7 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
     private ImageView iconImageView;
 
     private boolean isActive = false;
-    private byte type = BottomNavigation.TYPE_FIXED;
+    private int type = BottomNavigation.TYPE_FIXED;
     private AnimationHelper animationHelper;
     private BottomNavigation bottomNavigation;
 
@@ -55,6 +59,7 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
         parseCustomAttributes(attrs);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TabItem(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         parseCustomAttributes(attrs);
@@ -66,22 +71,46 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
         checkParent();
     }
 
-    private void setupView() {
+    private void checkParent() {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                if (getParent() instanceof BottomNavigation) {
+                    bottomNavigation = (BottomNavigation) getParent();
+                    type = bottomNavigation.getType();
+                    setupView();
+                } else {
+                    throw new RuntimeException("TabItem parent must be BottomNavigation!");
+                }
+            }
+        });
+    }
 
+    private void setupView() {
         setOnClickListener(this);
+        if (bottomNavigation.getMode()==BottomNavigation.MODE_PHONE) {
+            setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }else {
+            setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Util.dpToPx(56)));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setForeground(getResources().getDrawable(R.drawable.tab_forground,null));
+        }
+
         animationHelper = new AnimationHelper(type);
 
         textView = new TextView(getContext());
         textView.setTextColor(textColor);
         textView.setText(text);
         textView.setGravity(Gravity.CENTER);
-        textView.setLayoutParams(LayoutParamsHelper.getTabItemTextLayoutParams(getContext(), isActive, type));
+        textView.setLayoutParams(LayoutParamsHelper.getTabItemTextLayoutParams(type));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
         iconImageView = new ImageView(getContext());
         iconImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         iconImageView.setImageDrawable(icon);
-        iconImageView.setLayoutParams(LayoutParamsHelper.getTabItemIconLayoutParams(getContext(), isActive, type));
+        iconImageView.setLayoutParams(LayoutParamsHelper.getTabItemIconLayoutParams(type));
+
         if (position == bottomNavigation.getDefaultItem()) {
             isActive = true;
             animationHelper.animateActivate(textView, iconImageView);
@@ -107,6 +136,7 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
     }
 
     private void parseCustomAttributes(AttributeSet attributeSet) {
+
         if (attributeSet != null) {
             //get xml attributes
             TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.TabItem, 0, 0);
@@ -124,21 +154,6 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    private void checkParent() {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                if (getParent() instanceof BottomNavigation) {
-                    bottomNavigation = (BottomNavigation) getParent();
-                    type = bottomNavigation.getType();
-                    setupView();
-                } else {
-                    throw new RuntimeException("TabItem parent must be BottomNavigation!");
-                }
-            }
-        });
-    }
-
     public void setSelected(boolean isActive) {
         if (this.isActive != isActive) {
             notifyChange();
@@ -146,41 +161,30 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public void setOnTabItemClickListener(OnTabItemClickListener onTabItemClickListener) {
+        this.onTabItemClickListener = onTabItemClickListener;
     }
 
-    public void setPosition(byte position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
-    public byte getPosition() {
+    public int getPosition() {
         return this.position;
     }
 
     @Override
     public void onClick(View view) {
-        if (onItemClickListener != null) {
-            onItemClickListener.onClick(position);
+        if (onTabItemClickListener != null) {
+            onTabItemClickListener.onTabItemClick(position);
         }
     }
 
     private void notifyChange() {
-        switch (type) {
-            case BottomNavigation.TYPE_FIXED:
-                if (isActive) {
-                    animationHelper.animateDeactivate(textView, iconImageView);
-                } else {
-                    animationHelper.animateActivate(textView, iconImageView);
-                }
-                break;
-            case BottomNavigation.TYPE_DYNAMIC:
-                if (isActive) {
-                    animationHelper.animateDeactivate(textView, iconImageView);
-                } else {
-                    animationHelper.animateActivate(textView, iconImageView);
-                }
-                break;
+        if (isActive) {
+            animationHelper.animateDeactivate(textView, iconImageView);
+        } else {
+            animationHelper.animateActivate(textView, iconImageView);
         }
     }
 
@@ -189,4 +193,5 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
             textView.setTypeface(typeface);
         }
     }
+
 }

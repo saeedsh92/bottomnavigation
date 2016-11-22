@@ -9,11 +9,11 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.3"
+        versionCode 4
+        versionName "1.4.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         group = 'com.ss.bottomnavigation' // Change this to match your package name
-        version = '1.3' // Change this to match your version number
+        version = '1.4.1' // Change this to match your version number
     }
     buildTypes {
         release {

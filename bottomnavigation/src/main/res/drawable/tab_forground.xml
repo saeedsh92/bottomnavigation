@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:radius="32dp"
+    android:color="#20ffffff"
+    tools:ignore="NewApi" />

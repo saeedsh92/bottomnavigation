@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:textSize="50dp"
         android:text="Products"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimaryDark"
         android:fontFamily="sans-serif-light"
         android:visibility="visible"/>
 </FrameLayout>

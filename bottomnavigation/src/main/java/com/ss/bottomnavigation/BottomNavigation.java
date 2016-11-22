@@ -1,13 +1,16 @@
 package com.ss.bottomnavigation;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 
-import com.ss.bottomnavigation.events.OnItemClickListener;
 import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
+import com.ss.bottomnavigation.events.OnTabItemClickListener;
 import com.ss.bottomnavigation.utils.AnimationHelper;
 
 import java.util.ArrayList;
@@ -18,16 +21,16 @@ import java.util.List;
  * @since 11/13/16
  */
 
-public class BottomNavigation extends LinearLayout {
+public class BottomNavigation extends LinearLayout implements OnTabItemClickListener {
 
-    private byte type;
+    private int type;
 
-    public static final byte TYPE_FIXED = 1;
-    public static final byte TYPE_DYNAMIC = 0;
+    public static final int TYPE_FIXED = 1;
+    public static final int TYPE_DYNAMIC = 0;
 
     private OnSelectedItemChangeListener onSelectedItemChangeListener;
-    private byte defaultItem = 0;
-    private byte selectedItemPosition = defaultItem;
+    private int defaultItem = 0;
+    private int selectedItemPosition = defaultItem;
 
     List<TabItem> tabItems = new ArrayList<>();
     private Typeface typeface;
@@ -35,35 +38,53 @@ public class BottomNavigation extends LinearLayout {
     public BottomNavigation(Context context) {
         super(context);
         if (!isInEditMode()) {
-            setup();
+            setup(null);
         }
     }
 
     public BottomNavigation(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode()) {
-            setup();
+            setup(attrs);
         }
     }
 
     public BottomNavigation(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (!isInEditMode()) {
-            setup();
+            setup(attrs);
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BottomNavigation(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         if (!isInEditMode()) {
-            setup();
+            setup(attrs);
         }
     }
 
-    private void setup() {
-        setOrientation(HORIZONTAL);
-        setGravity(Gravity.CENTER_HORIZONTAL);
+    private void setup(AttributeSet attributeSet) {
+        parseAttributes(attributeSet);
+        switch (mode) {
+            case MODE_TABLET:
+                setOrientation(VERTICAL);
+                setGravity(Gravity.CENTER_HORIZONTAL);
+                break;
+            default:
+            case MODE_PHONE:
+                setOrientation(HORIZONTAL);
+                setGravity(Gravity.LEFT);
+                break;
+        }
         setMinimumHeight(getContext().getResources().getDimensionPixelSize(R.dimen.bottom_navigation_min_width));
+    }
+
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        setupChildren();
     }
 
     private void setupChildren() {
@@ -76,30 +97,14 @@ public class BottomNavigation extends LinearLayout {
                     type = TYPE_FIXED;
                 }
 
-                for (byte i = 0; i < getChildCount(); i++) {
+                for (int i = 0; i < getChildCount(); i++) {
                     if (!(getChildAt(i) instanceof TabItem)) {
                         throw new RuntimeException("Bottom navigation only accept tab item as child.");
                     } else {
                         final TabItem tabItem = (TabItem) getChildAt(i);
                         tabItem.setPosition(i);
                         tabItems.add(tabItem);
-                        tabItem.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onClick(byte position) {
-                                if (position!=selectedItemPosition) {
-                                    selectedItemPosition = position;
-                                    onSelectedItemChanged();
-                                    if (onSelectedItemChangeListener != null) {
-                                        postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                onSelectedItemChangeListener.onSelectedItemChanged(tabItem.getId());
-                                            }
-                                        }, AnimationHelper.ANIMATION_DURATION);
-                                    }
-                                }
-                            }
-                        });
+                        tabItem.setOnTabItemClickListener(this);
                     }
                 }
             } else {
@@ -108,12 +113,6 @@ public class BottomNavigation extends LinearLayout {
         } else {
             throw new RuntimeException("Bottom navigation can't be empty!");
         }
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        setupChildren();
     }
 
     private void onSelectedItemChanged() {
@@ -126,11 +125,11 @@ public class BottomNavigation extends LinearLayout {
         }
     }
 
-    public byte getType() {
+    public int getType() {
         return type;
     }
 
-    public void setDefaultItem(byte position) {
+    public void setDefaultItem(int position) {
         this.defaultItem = position;
     }
 
@@ -138,9 +137,6 @@ public class BottomNavigation extends LinearLayout {
         return defaultItem;
     }
 
-    public void setOnSelectedItemChangeListener(OnSelectedItemChangeListener onSelectedItemChangeListener) {
-        this.onSelectedItemChangeListener = onSelectedItemChangeListener;
-    }
 
     public Typeface getTypeface() {
         return typeface;
@@ -149,7 +145,7 @@ public class BottomNavigation extends LinearLayout {
     public void setTypeface(final Typeface typeface) {
         this.typeface = typeface;
         for (int i = 0; i < tabItems.size(); i++) {
-            final TabItem tabItem=tabItems.get(i);
+            final TabItem tabItem = tabItems.get(i);
             tabItem.post(new Runnable() {
                 @Override
                 public void run() {
@@ -158,4 +154,51 @@ public class BottomNavigation extends LinearLayout {
             });
         }
     }
+
+    public void setOnSelectedItemChangeListener(OnSelectedItemChangeListener onSelectedItemChangeListener) {
+        this.onSelectedItemChangeListener = onSelectedItemChangeListener;
+        onSelectedItemChangeListener.onSelectedItemChanged(tabItems.get(defaultItem).getId());
+
+    }
+
+    @Override
+    public void onTabItemClick(final int position) {
+        if (position != selectedItemPosition) {
+            selectedItemPosition = position;
+            onSelectedItemChanged();
+            if (onSelectedItemChangeListener != null) {
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        onSelectedItemChangeListener.onSelectedItemChanged(tabItems.get(position).getId());
+                    }
+                }, AnimationHelper.ANIMATION_DURATION);
+            }
+        }
+    }
+
+
+    public static final int MODE_PHONE = 0;
+    public static final int MODE_TABLET = 1;
+    private int mode = HORIZONTAL;
+
+    private void parseAttributes(AttributeSet attributeSet) {
+        if (attributeSet != null) {
+            TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.BottomNavigation);
+            try {
+                mode = typedArray.getInteger(R.styleable.BottomNavigation_mode, MODE_PHONE);
+            } finally {
+                typedArray.recycle();
+            }
+        }
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
 }

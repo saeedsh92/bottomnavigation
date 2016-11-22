@@ -5,4 +5,10 @@
         <attr name="tab_text" format="string"/>
         <attr name="tab_text_color" format="color"/>
     </declare-styleable>
+    <declare-styleable name="BottomNavigation">
+        <attr name="mode" format="integer">
+            <enum name="tablet" value="1"/>
+            <enum name="phone" value="0"/>
+        </attr>
+    </declare-styleable>
 </resources>

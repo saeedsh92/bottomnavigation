@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-
 import com.ss.bottomnavigation.BottomNavigation;
 import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
 
@@ -51,11 +50,6 @@ public class MainActivity extends AppCompatActivity{
                 transaction.commit();
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-
     }
 
 }
