@@ -1,9 +1,10 @@
 # BottomNavigation
 Bottom navigation inspired by google material design guideline.
 
-<img src="https://github.com/saeedsh92/bottomnavigation/blob/master/Screenshot_1479215016.png?raw=false" width="350">
-<img src="https://github.com/saeedsh92/bottomnavigation/blob/master/Screenshot_1479541545.png?raw=false" width="350">
-
+<img src="https://github.com/saeedsh92/bottomnavigation/blob/master/port_dynamic.png?raw=false" width="350">
+<img src="https://github.com/saeedsh92/bottomnavigation/blob/master/port_fixed.png?raw=false" width="350">
+<img src="https://github.com/saeedsh92/bottomnavigation/blob/master/land_dynamic.png?raw=false" width="700">
+<img src="https://github.com/saeedsh92/bottomnavigation/blob/master/land_fixed.png?raw=false" width="700">
 ## How to download
 ### Gradle: 
 add this line to your module build.gradle dependecies block:
