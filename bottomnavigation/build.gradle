@@ -12,6 +12,7 @@ android {
         versionCode 5
         versionName "1.4.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
