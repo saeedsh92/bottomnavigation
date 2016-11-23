@@ -3,6 +3,7 @@ package com.ss.bottomnavigation.utils;
 /**
  * @author S.Shahini
  * @since 11/14/16
+ * this class hold dynamic bottom navigation dimens
  */
 
 public class DynamicDimens extends Dimens{

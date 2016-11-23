@@ -9,6 +9,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -88,13 +89,13 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
 
     private void setupView() {
         setOnClickListener(this);
-        if (bottomNavigation.getMode()==BottomNavigation.MODE_PHONE) {
+        if (bottomNavigation.getMode() == BottomNavigation.MODE_PHONE) {
             setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        }else {
+        } else {
             setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Util.dpToPx(56)));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setForeground(getResources().getDrawable(R.drawable.tab_forground,null));
+            setForeground(getResources().getDrawable(R.drawable.tab_forground, null));
         }
 
         animationHelper = new AnimationHelper(type);

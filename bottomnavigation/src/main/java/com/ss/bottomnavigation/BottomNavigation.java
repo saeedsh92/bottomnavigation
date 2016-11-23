@@ -18,22 +18,95 @@ import java.util.List;
 
 /**
  * @author S.Shahini
- * @since 11/13/16
+ * @since 11/13/1
+ * Bottom navigation inspired by google material design guideline.
+ * <p>
+ * Copyright 2016 Saeed shahini
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class BottomNavigation extends LinearLayout implements OnTabItemClickListener {
 
+    /**
+     * this variable used to hold value of bottom navigation type
+     *
+     * @see BottomNavigation#TYPE_FIXED
+     * @see BottomNavigation#TYPE_DYNAMIC
+     */
     private int type;
 
+    /**
+     * If bottom navigation has only three items, then this constant used for {@link BottomNavigation#type}
+     * in this type, tab labels will always show
+     */
     public static final int TYPE_FIXED = 1;
+
+    /**
+     * If Bottom navigation tab items count be between 3 to 5, then this constant used for {@link BottomNavigation#type}
+     */
     public static final int TYPE_DYNAMIC = 0;
 
-    private OnSelectedItemChangeListener onSelectedItemChangeListener;
+    /**
+     * bottom navigation in phone mode, is horizontal and will aligned bottom of activity
+     *
+     * @see BottomNavigation#mode
+     */
+    public static final int MODE_PHONE = 0;
+
+    /**
+     * bottom navigation in tablet mode, is vertical and will aligned left or right(based on local)
+     *
+     * @see BottomNavigation#mode
+     */
+    public static final int MODE_TABLET = 1;
+
+    /**
+     * describe default tab item that must be selected by default, it will be selected when method
+     * {@link BottomNavigation#setOnSelectedItemChangeListener(OnSelectedItemChangeListener)} called.
+     *
+     * @see OnSelectedItemChangeListener
+     */
     private int defaultItem = 0;
+
+    /**
+     * this variable hold position of selected tab item.
+     */
     private int selectedItemPosition = defaultItem;
 
+    /**
+     * List of bottom navigation tab items
+     */
     List<TabItem> tabItems = new ArrayList<>();
+
+    /**
+     * typeface used for tab item labels
+     */
     private Typeface typeface;
+
+    /**
+     * used for specify how bottom navigation must show to user.
+     * <p/>
+     * bottom navigation currently has two modes:
+     * 1- {@link BottomNavigation#MODE_PHONE}
+     * 2- {@link BottomNavigation#MODE_TABLET}
+     */
+    private int mode = MODE_PHONE;
+
+    /**
+     * @see OnSelectedItemChangeListener
+     */
+    private OnSelectedItemChangeListener onSelectedItemChangeListener;
 
     public BottomNavigation(Context context) {
         super(context);
@@ -64,6 +137,11 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
         }
     }
 
+    /**
+     * this method setup necessary attributes and behavior of bottom navigation
+     *
+     * @param attributeSet used for setup xml custom attributes
+     */
     private void setup(AttributeSet attributeSet) {
         parseAttributes(attributeSet);
         switch (mode) {
@@ -80,13 +158,19 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
         setMinimumHeight(getContext().getResources().getDimensionPixelSize(R.dimen.bottom_navigation_min_width));
     }
 
-
+    /**
+     * we call {@link #setupChildren()} in this method, because bottom navigation children are drew in this
+     * state and aren't null
+     */
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         setupChildren();
     }
 
+    /**
+     * this function setup {@link TabItem}s, also specify {@link BottomNavigation#type}
+     */
     private void setupChildren() {
         if (getChildCount() > 0) {
             if (getChildCount() >= 3 && getChildCount() <= 5) {
@@ -115,6 +199,9 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
         }
     }
 
+    /**
+     * this function used to manage which tab item must selected or which item must deselect
+     */
     private void onSelectedItemChanged() {
         for (int i = 0; i < tabItems.size(); i++) {
             if (tabItems.get(i).getPosition() == selectedItemPosition) {
@@ -125,6 +212,42 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
         }
     }
 
+    /**
+     * @see OnTabItemClickListener
+     */
+    @Override
+    public void onTabItemClick(final int position) {
+        if (position != selectedItemPosition) {
+            selectedItemPosition = position;
+            onSelectedItemChanged();
+            if (onSelectedItemChangeListener != null) {
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        onSelectedItemChangeListener.onSelectedItemChanged(tabItems.get(position).getId());
+                    }
+                }, AnimationHelper.ANIMATION_DURATION);
+            }
+        }
+    }
+
+    /**
+     * this function get xml custom attributes and parse it to instance variables
+     *
+     * @param attributeSet used for retrieve custom values
+     */
+    private void parseAttributes(AttributeSet attributeSet) {
+        if (attributeSet != null) {
+            TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.BottomNavigation);
+            try {
+                mode = typedArray.getInteger(R.styleable.BottomNavigation_mode, MODE_PHONE);
+            } finally {
+                typedArray.recycle();
+            }
+        }
+    }
+
+    //Getter and Setters
     public int getType() {
         return type;
     }
@@ -136,7 +259,6 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
     public int getDefaultItem() {
         return defaultItem;
     }
-
 
     public Typeface getTypeface() {
         return typeface;
@@ -158,39 +280,6 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
     public void setOnSelectedItemChangeListener(OnSelectedItemChangeListener onSelectedItemChangeListener) {
         this.onSelectedItemChangeListener = onSelectedItemChangeListener;
         onSelectedItemChangeListener.onSelectedItemChanged(tabItems.get(defaultItem).getId());
-
-    }
-
-    @Override
-    public void onTabItemClick(final int position) {
-        if (position != selectedItemPosition) {
-            selectedItemPosition = position;
-            onSelectedItemChanged();
-            if (onSelectedItemChangeListener != null) {
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        onSelectedItemChangeListener.onSelectedItemChanged(tabItems.get(position).getId());
-                    }
-                }, AnimationHelper.ANIMATION_DURATION);
-            }
-        }
-    }
-
-
-    public static final int MODE_PHONE = 0;
-    public static final int MODE_TABLET = 1;
-    private int mode = HORIZONTAL;
-
-    private void parseAttributes(AttributeSet attributeSet) {
-        if (attributeSet != null) {
-            TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.BottomNavigation);
-            try {
-                mode = typedArray.getInteger(R.styleable.BottomNavigation_mode, MODE_PHONE);
-            } finally {
-                typedArray.recycle();
-            }
-        }
     }
 
     public int getMode() {
@@ -200,5 +289,6 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
     public void setMode(int mode) {
         this.mode = mode;
     }
+
 
 }

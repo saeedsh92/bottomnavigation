@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity{
         toolbar.setTitleTextColor(ContextCompat.getColor(this,android.R.color.white));
 
         BottomNavigation bottomNavigation=(BottomNavigation)findViewById(R.id.bottom_navigation);
+        bottomNavigation.setDefaultItem(2);
         bottomNavigation.setOnSelectedItemChangeListener(new OnSelectedItemChangeListener() {
             @Override
             public void onSelectedItemChanged(int itemId) {
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity{
                 transaction.commit();
             }
         });
+
     }
 
 }

@@ -14,16 +14,33 @@ import com.ss.bottomnavigation.BottomNavigation;
 /**
  * @author S.Shahini
  * @since 11/13/16
+ * this class is a helper for handling tab items animations.
  */
 
 public class AnimationHelper {
+    /**
+     * this variable hold {@link BottomNavigation#type}
+     * @see BottomNavigation#type
+     */
     private int type;
+
+    /**
+     * this constant used for specify animations duration, also used for determine delay time for send
+     * {@link com.ss.bottomnavigation.events.OnSelectedItemChangeListener} event
+     */
     public static int ANIMATION_DURATION = 100;
 
+    /**
+     * default constructor
+     * @param type used for make decision which animation should play on tab items
+     */
     public AnimationHelper(int type) {
         this.type = type;
     }
 
+    /**
+     * animate tab item when it deselected
+     */
     public void animateDeactivate(final TextView tabText, final ImageView tabIcon) {
         switch (type) {
             case BottomNavigation.TYPE_FIXED:
@@ -84,6 +101,9 @@ public class AnimationHelper {
         }
     }
 
+    /**
+     * animate tab item when it selected
+     */
     public void animateActivate(final TextView tabText, final ImageView tabIcon) {
         switch (type) {
             case BottomNavigation.TYPE_FIXED:
