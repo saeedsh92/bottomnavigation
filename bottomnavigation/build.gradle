@@ -4,13 +4,13 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven'
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.4.2"
+        versionCode 6
+        versionName "1.4.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -20,6 +20,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+
 }
 
 
