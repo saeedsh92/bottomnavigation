@@ -254,6 +254,7 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
 
     public void setDefaultItem(int position) {
         this.defaultItem = position;
+        this.selectedItemPosition=position;
     }
 
     public int getDefaultItem() {
