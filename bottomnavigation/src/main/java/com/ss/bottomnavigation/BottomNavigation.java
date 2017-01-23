@@ -293,5 +293,8 @@ public class BottomNavigation extends LinearLayout implements OnTabItemClickList
     public int getSelectedItem(){
         return selectedItemPosition;
     }
+    public void setSelectedItem(int position){
+        onTabItemClick(position);
+    }
 
 }
