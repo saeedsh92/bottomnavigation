@@ -1,4 +1,4 @@
-package com.ss.bottomnavsample;
+package com.ss.bottomnavsample.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -9,13 +9,19 @@ import android.support.v7.widget.Toolbar;
 
 import com.ss.bottomnavigation.BottomNavigation;
 import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
+import com.ss.bottomnavsample.FragmentA;
+import com.ss.bottomnavsample.FragmentB;
+import com.ss.bottomnavsample.FragmentC;
+import com.ss.bottomnavsample.FragmentD;
+import com.ss.bottomnavsample.FragmentF;
+import com.ss.bottomnavsample.R;
 
-public class MainActivity extends AppCompatActivity{
+public class DefaultStyleDynamicActivity extends AppCompatActivity{
     private FragmentTransaction transaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_default_style);
 
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

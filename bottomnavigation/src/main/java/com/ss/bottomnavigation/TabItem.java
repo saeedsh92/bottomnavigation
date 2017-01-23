@@ -4,12 +4,12 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -33,8 +33,11 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
 
     //Attributes
     private String text;
-    private Drawable icon;
-    private int textColor;
+    private Drawable selectedTabIcon;
+    private int selectedTabTextColor;
+
+    private Drawable unselectedTabIcon;
+    private int unselectedTabTextColor;
 
     //Views
     private TextView textView;
@@ -101,7 +104,7 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
         animationHelper = new AnimationHelper(type);
 
         textView = new TextView(getContext());
-        textView.setTextColor(textColor);
+        textView.setTextColor(selectedTabTextColor);
         textView.setText(text);
         textView.setGravity(Gravity.CENTER);
         textView.setLayoutParams(LayoutParamsHelper.getTabItemTextLayoutParams(type));
@@ -109,14 +112,22 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
 
         iconImageView = new ImageView(getContext());
         iconImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        iconImageView.setImageDrawable(icon);
+        iconImageView.setImageDrawable(selectedTabIcon);
         iconImageView.setLayoutParams(LayoutParamsHelper.getTabItemIconLayoutParams(type));
 
         if (position == bottomNavigation.getDefaultItem()) {
             isActive = true;
-            animationHelper.animateActivate(textView, iconImageView);
+            if (unselectedTabIcon==null || unselectedTabTextColor==0) {
+                animationHelper.animateActivate(textView, iconImageView);
+            }else {
+                animationHelper.animateActivate(textView,iconImageView,selectedTabTextColor,selectedTabTextColor,selectedTabIcon,unselectedTabIcon);
+            }
         } else {
-            animationHelper.animateDeactivate(textView, iconImageView);
+            if (unselectedTabIcon==null || unselectedTabTextColor==0) {
+                animationHelper.animateDeactivate(textView, iconImageView);
+            }else {
+                animationHelper.animateDeactivate(textView,iconImageView,unselectedTabTextColor,selectedTabTextColor,selectedTabIcon,unselectedTabIcon);
+            }
         }
 
         switch (type) {
@@ -144,11 +155,14 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
             try {
                 text = typedArray.getString(R.styleable.TabItem_tab_text);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    textColor = typedArray.getColor(R.styleable.TabItem_tab_text_color, getResources().getColor(R.color.default_text_color, null));
+                    selectedTabTextColor = typedArray.getColor(R.styleable.TabItem_tab_text_color, getResources().getColor(R.color.default_text_color, null));
+                    unselectedTabTextColor = typedArray.getColor(R.styleable.TabItem_unselected_tab_text_color,0);
                 } else {
-                    textColor = typedArray.getColor(R.styleable.TabItem_tab_text_color, getResources().getColor(R.color.default_text_color));
+                    selectedTabTextColor = typedArray.getColor(R.styleable.TabItem_tab_text_color, getResources().getColor(R.color.default_text_color));
+                    unselectedTabTextColor = typedArray.getColor(R.styleable.TabItem_unselected_tab_text_color, 0);
                 }
-                icon = typedArray.getDrawable(R.styleable.TabItem_tab_icon);
+                selectedTabIcon = typedArray.getDrawable(R.styleable.TabItem_tab_icon);
+                unselectedTabIcon=typedArray.getDrawable(R.styleable.TabItem_unselected_tab_icon);
             } finally {
                 typedArray.recycle();
             }
@@ -182,10 +196,18 @@ public class TabItem extends FrameLayout implements View.OnClickListener {
     }
 
     private void notifyChange() {
-        if (isActive) {
-            animationHelper.animateDeactivate(textView, iconImageView);
-        } else {
-            animationHelper.animateActivate(textView, iconImageView);
+        if (unselectedTabIcon==null || unselectedTabTextColor==0){
+            if (isActive){
+                animationHelper.animateDeactivate(textView, iconImageView);
+            }else {
+                animationHelper.animateActivate(textView, iconImageView);
+            }
+        }else {
+            if (isActive){
+                animationHelper.animateDeactivate(textView,iconImageView,unselectedTabTextColor,selectedTabTextColor,selectedTabIcon,unselectedTabIcon);
+            }else {
+                animationHelper.animateActivate(textView,iconImageView,unselectedTabTextColor,selectedTabTextColor,selectedTabIcon,unselectedTabIcon);
+            }
         }
     }
 

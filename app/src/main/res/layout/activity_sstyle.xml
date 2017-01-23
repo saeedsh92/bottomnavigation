@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ss.bottomnavsample.activities.DefaultStyleDynamicActivity"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        />
+    <com.ss.bottomnavigation.BottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:elevation="6dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        app:mode="phone">
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_home"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Home"
+            app:tab_icon="@drawable/ic_home_color_primary_24dp"
+            app:unselected_tab_icon="@drawable/ic_home_unselected_24dp"
+            style="@style/BottomNavigationTabStyle"
+            />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_images"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Images"
+            app:tab_icon="@drawable/ic_image_color_primary_24dp"
+            app:unselected_tab_icon="@drawable/ic_image_unselected_24dp"
+            style="@style/BottomNavigationTabStyle"
+            />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Camera"
+            app:tab_icon="@drawable/ic_camera_color_primary_24dp"
+            app:unselected_tab_icon="@drawable/ic_camera_unselected_24dp"
+
+            style="@style/BottomNavigationTabStyle"
+            />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_products"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="Products"
+            app:tab_icon="@drawable/ic_products_color_primary_24dp"
+            app:unselected_tab_icon="@drawable/ic_products_unselected_24dp"
+
+            style="@style/BottomNavigationTabStyle"/>
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:tab_text="More"
+            app:tab_icon="@drawable/ic_more_color_primary_24dp"
+            app:unselected_tab_icon="@drawable/ic_more_unselected_24dp"
+            style="@style/BottomNavigationTabStyle"/>
+
+    </com.ss.bottomnavigation.BottomNavigation>
+
+    <FrameLayout
+        android:id="@+id/frame_fragment_containers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"/>
+</RelativeLayout>

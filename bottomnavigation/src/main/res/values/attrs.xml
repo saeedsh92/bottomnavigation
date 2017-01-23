@@ -4,6 +4,8 @@
         <attr name="tab_icon" format="reference"/>
         <attr name="tab_text" format="string"/>
         <attr name="tab_text_color" format="color"/>
+        <attr name="unselected_tab_text_color" format="color"/>
+        <attr name="unselected_tab_icon" format="reference"/>
     </declare-styleable>
     <declare-styleable name="BottomNavigation">
         <attr name="mode" format="integer">

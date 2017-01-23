@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="BottomNavigationTabStyle">
+        <item name="tab_text_color">@color/colorPrimary</item>
+        <item name="unselected_tab_text_color">@color/unselectedIconColor</item>
+    </style>
+
 </resources>
