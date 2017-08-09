@@ -11,13 +11,13 @@ Bottom navigation inspired by google material design guideline.
 ### Gradle: 
 add this line to your module build.gradle dependecies block:
 
-    compile 'com.ss.bottomnavigation:bottomnavigation:1.5.1'
+    compile 'com.ss.bottomnavigation:bottomnavigation:1.5.2'
 
 ### Maven
     <dependency>
       <groupId>com.ss.bottomnavigation</groupId>
       <artifactId>bottomnavigation</artifactId>
-      <version>1.5.1</version>
+      <version>1.5.2</version>
       <type>pom</type>
     </dependency>
 
