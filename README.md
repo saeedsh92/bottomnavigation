@@ -1,3 +1,6 @@
+# Deprecated
+### I created this project in 2016. many things have changed and there are many other new great alternatives for creating bottom navigation bar in android. so I decided to deprecate this package.
+
 # BottomNavigation
 Bottom navigation inspired by google material design guideline.
 <img src="https://github.com/saeedsh92/bottomnavigation/blob/master/demo_banner.png?raw=false" width="700">
